@@ -35,13 +35,12 @@ class WHListing(Base):
 
     def __init__(self):
         self.listing = []
-        #TODO: I don't know about this
-        self.__call__()
+        self._get()
 
     def __iter__(self):
         return iter(self.listing)
 
-    def __call__(self):
+    def _get(self):
         """Get listing from HN user whoishiring
 
         Returns:
