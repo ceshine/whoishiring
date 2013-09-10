@@ -1,4 +1,4 @@
-import nose.tools
+import nose.tools as nt
 from lib import whlisting, utils
 from mock import patch
 from spec import Spec
@@ -21,4 +21,9 @@ class TestWHListing(Spec):
         test_min = 25
         test_max = 31
         exp = len(l.listing) > test_min and len(l.listing) < test_max
-        nose.tools.ok_(exp, "Number of items out of acceptable range")
+        nt.ok_(exp, "Number of items out of acceptable range")
+
+    def test_iterates_over_listing(self):
+        l = whlisting.WHListing()
+        for item in l:
+            nt.ok_(isinstance(item, whlisting.Item), "item not an instance of Item")
