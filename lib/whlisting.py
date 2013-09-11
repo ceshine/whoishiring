@@ -10,13 +10,15 @@ import logging
 import utils
 from base import Base
 from urlparse import urljoin
+from collections import OrderedDict
+from datetime import date
 
 
 logger = logging.getLogger('lib.whlisting')
 
 
 # A list of those is returned after parsing the listing page for whoishiring account
-Item = namedtuple('HNListingItem', ['title', 'permanent', 'url', 'date'], verbose=False)
+Item = namedtuple('HNListingItem', ['title', 'permanent', 'url'], verbose=False)
 
 
 class Error(Exception):
@@ -29,22 +31,18 @@ class ListingError(Error):
         self.msg = msg
 
 
-class WHListing(Base):
+class WHListing(OrderedDict, Base):
     _date_rx = r'.*\((.+)\).*'
     datere = re.compile(_date_rx)
 
     def __init__(self):
-        self.listing = []
+        # self.listing = []
+        super(WHListing, self).__init__()
         self._get()
 
-    def __getitem__(self, item):
-        return self.listing[item]
-
-    def __len__(self):
-        return len(self.listing)
-
-    def __iter__(self):
-        return iter(self.listing)
+    def __missing__(self, key):
+        self[key] = []
+        return self[key]
 
     def _get(self):
         """Get listing from HN user whoishiring
@@ -52,21 +50,18 @@ class WHListing(Base):
         Returns:
          List of named tuples containing title, url, date, is_freelance[T/F] indicator for each listing
         """
-        items = []
         try:
             nextpage = Base.SUBMISSION_URL
             while True:
-                listing_page, nextpage = self._prepare_listing_page(urljoin(Base.HN_BASE_URL, nextpage))
-                items.extend(listing_page)
+                nextpage = self._prepare_listing_page(urljoin(Base.HN_BASE_URL, nextpage))
 
                 # if nextpage == None then that means
                 if not nextpage:
-                    self.listing = items
-                    return items
+                    return self
                 logging.info("Grabbing next page: %s", nextpage)
         except:
             logger.error("Error getting all submissions")
-            return None
+            raise
 
 
     def _prepare_listing_page(self, url=Base.SUBMISSION_URL):
@@ -78,8 +73,6 @@ class WHListing(Base):
         Returns:
          List of Item elements
         """
-        items = []
-
         rawpage = utils.get_raw_page(url)
 
         try:
@@ -96,19 +89,20 @@ class WHListing(Base):
 
             # skip item if it has no date, like (January 2012) in title, probably not a job listing
             try:
-                items.append(Item(title=title,
-                                  permanent=perm,
-                                  url=url,
-                                  date=date_parse(self.datere.match(title).group(1)).date()
-                ))
+                item_date = date_parse(self.datere.match(title).group(1)).date()
+                idate = date(item_date.year, item_date.month, 1)
+                self[idate].append(Item(title=title,
+                                      permanent=perm,
+                                      url=url
+                                   ))
             except AttributeError:
                 logger.info('SKIPPING: %s', title)
 
         try:
             if listing[-1].text == 'More':
-                return items, url
+                return url
             else:
-                return items, None
+                return None
         except IndexError:
             logging.error("Can't prepare submission, you may be rate limited.")
             raise
