@@ -20,12 +20,9 @@ class TestWHListing(Spec):
         l = whlisting.WHListing()
         nt.ok_(len(l) > 20 and len(l) < 40)
 
-    def test_extracts_listings_from_page(self):
+    def test_indexing_listing(self):
         l = whlisting.WHListing()
-        test_min = 25
-        test_max = 31
-        exp = len(l.listing) > test_min and len(l.listing) < test_max
-        nt.ok_(exp, "Number of items out of acceptable range")
+        nt.ok_("December 2012" in l[7].title, "Item is from correct date")
 
     def test_iterates_over_listing(self):
         l = whlisting.WHListing()
