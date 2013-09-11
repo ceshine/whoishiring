@@ -5,6 +5,7 @@ from spec import Spec
 import mocks
 from datetime import date
 from random import randint
+from itertools import izip
 
 
 class TestWHListing(Spec):
@@ -27,7 +28,28 @@ class TestWHListing(Spec):
         idate = date(2012, 12, 1)
         nt.ok_("December 2012" in l[idate][1].title, "Item doesn't contain correct string")
 
-    def test_iterates_over_listing(self):
+    def test_iterates_in_order_over_listing(self):
         l = whlisting.WHListing()
-        for k, v in l.iteritems():
+        dates = [(2013, 3, 1),
+                (2013, 2, 1),
+                (2013, 1, 1),
+                (2012, 12, 1),
+                (2012, 11, 1),
+                (2012, 10, 1),
+                (2012, 9, 1),
+                (2012, 8, 1),
+                (2012, 7, 1),
+                (2012, 6, 1),
+                (2012, 5, 01),
+                (2012, 4, 1),
+                (2012, 3, 1),
+                (2012, 2, 1)]
+
+        for (k, v), d in izip(l.iteritems(), dates):
             nt.ok_(isinstance(v[randint(0, 1)], whlisting.Item), "Item not an instance of Item")
+            nt.eq_(date(*d), k, "Iterating not in order")
+
+    def test_returns_correct_latest(self):
+        l = whlisting.WHListing()
+        nt.eq_(l.keys()[0], date(2013, 3, 1), "Bad date forthe latest item")
+        nt.eq_(l.latest()[0].date, date(2013, 3, 1), "Bad date forthe latest item")
