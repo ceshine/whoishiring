@@ -20,7 +20,7 @@ def get_raw_page(url):
         f = urllib2.urlopen(request)
     except urllib2.URLError as e:
         logger.error("Error occured when downloading page: %s", e.message)
-        return None
+        raise
     return f
 
 
