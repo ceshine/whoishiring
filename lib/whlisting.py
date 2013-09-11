@@ -18,7 +18,7 @@ logger = logging.getLogger('lib.whlisting')
 
 
 # A list of those is returned after parsing the listing page for whoishiring account
-Item = namedtuple('HNListingItem', ['title', 'permanent', 'url'], verbose=False)
+Item = namedtuple('HNListingItem', ['title', 'permanent', 'url', 'date'], verbose=False)
 
 
 class Error(Exception):
@@ -93,7 +93,8 @@ class WHListing(OrderedDict, Base):
                 idate = date(item_date.year, item_date.month, 1)
                 self[idate].append(Item(title=title,
                                       permanent=perm,
-                                      url=url
+                                      url=url,
+                                      date=idate
                                    ))
             except AttributeError:
                 logger.info('SKIPPING: %s', title)
@@ -106,3 +107,6 @@ class WHListing(OrderedDict, Base):
         except IndexError:
             logging.error("Can't prepare submission, you may be rate limited.")
             raise
+
+    def latest(self):
+        return self[next(iter(self))]
