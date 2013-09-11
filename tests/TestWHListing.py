@@ -3,6 +3,8 @@ from lib import whlisting, utils
 from mock import patch
 from spec import Spec
 import mocks
+from datetime import date
+from random import randint
 
 
 class TestWHListing(Spec):
@@ -18,13 +20,14 @@ class TestWHListing(Spec):
 
     def test_listing_has_non_zero_length(self):
         l = whlisting.WHListing()
-        nt.ok_(len(l) > 20 and len(l) < 40)
+        nt.ok_(len(l) == 14, "Not a correct number of items in listing")
 
     def test_indexing_listing(self):
         l = whlisting.WHListing()
-        nt.ok_("December 2012" in l[7].title, "Item is from correct date")
+        idate = date(2012, 12, 1)
+        nt.ok_("December 2012" in l[idate][1].title, "Item doesn't contain correct string")
 
     def test_iterates_over_listing(self):
         l = whlisting.WHListing()
-        for item in l:
-            nt.ok_(isinstance(item, whlisting.Item), "item not an instance of Item")
+        for k, v in l.iteritems():
+            nt.ok_(isinstance(v[randint(0, 1)], whlisting.Item), "Item not an instance of Item")
