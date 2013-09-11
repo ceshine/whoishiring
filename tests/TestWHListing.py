@@ -16,6 +16,10 @@ class TestWHListing(Spec):
     def teardown(self):
         self.patcher_ep.stop()
 
+    def test_listing_has_non_zero_length(self):
+        l = whlisting.WHListing()
+        nt.ok_(len(l) > 20 and len(l) < 40)
+
     def test_extracts_listings_from_page(self):
         l = whlisting.WHListing()
         test_min = 25
