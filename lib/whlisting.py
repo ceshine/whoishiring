@@ -37,6 +37,12 @@ class WHListing(Base):
         self.listing = []
         self._get()
 
+    def __getitem__(self, item):
+        return self.listing[item]
+
+    def __len__(self):
+        return len(self.listing)
+
     def __iter__(self):
         return iter(self.listing)
 
