@@ -15,7 +15,6 @@ def get_raw_page(url):
     Returns:
      File-like object, like urlopen does for urllib2
     """
-    print 'not mocked called'
     request = urllib2.Request(url, None, {'User-Agent': config.USERAGENT})
     try:
         f = urllib2.urlopen(request)
