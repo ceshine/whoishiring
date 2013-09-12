@@ -31,6 +31,20 @@ class ListingError(Error):
         self.msg = msg
 
 
+class PFSubmissions(object):
+    def __init__(self):
+        self.permanent = None
+        self.freelance = None
+
+    def __getitem__(self, item):
+        # self.__dict__.values()[item]
+        #TODO: I don't know about this
+        return self.permanent if item else self.freelance
+
+    # def __setattr__(self, key, value):
+    #     self.__dict__[key] = value
+    #     # self.__dict__['_v'].append(value)
+
 class WHListing(OrderedDict, Base):
     _date_rx = r'.*\((.+)\).*'
     datere = re.compile(_date_rx)
@@ -41,7 +55,7 @@ class WHListing(OrderedDict, Base):
         self._get()
 
     def __missing__(self, key):
-        self[key] = []
+        self[key] = PFSubmissions()
         return self[key]
 
     def _get(self):
@@ -73,6 +87,14 @@ class WHListing(OrderedDict, Base):
         Returns:
          List of Item elements
         """
+        def _decide_perm(title):
+            if Base.PERMANENT_TITLE in title:
+                return 'permanent'
+            elif Base.FREELANCE_TITLE in title:
+                return 'freelance'
+            else:
+                raise ValueError
+
         rawpage = utils.get_raw_page(url)
 
         try:
@@ -84,19 +106,19 @@ class WHListing(OrderedDict, Base):
         listing = page.find('.title a')
         for i in listing:
             url = pq(i).attr('href')
-            perm = 'freelance' not in i.text.lower()
             title = i.text.strip()
 
             # skip item if it has no date, like (January 2012) in title, probably not a job listing
             try:
                 item_date = date_parse(self.datere.match(title).group(1)).date()
                 idate = date(item_date.year, item_date.month, 1)
-                self[idate].append(Item(title=title,
-                                      permanent=perm,
-                                      url=url,
-                                      date=idate
-                                   ))
-            except AttributeError:
+                position = _decide_perm(title.lower())
+                setattr(self[idate], position, Item(title=title,
+                                                  permanent=position,
+                                                  url=url,
+                                                  date=idate
+                                               ))
+            except (AttributeError, ValueError):
                 logger.info('SKIPPING: %s', title)
 
         try:
