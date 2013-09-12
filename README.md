@@ -6,7 +6,7 @@ Usage
 -----
 
 ### whoishiring listing
-Get all ![user whoishiring](https://news.ycombinator.com/submitted?id=whoishiring)'s submissions
+Get all [user whoishiring](https://news.ycombinator.com/submitted?id=whoishiring)'s submissions
 ```
 In [1]: from whoishiring.lib import whlisting
 
