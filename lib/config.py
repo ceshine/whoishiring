@@ -11,3 +11,6 @@ DB_SUBMISSIONS_COLLECTION = "listings"
 DB_CACHE = "hncache"
 DB_CACHE_COLLECTION = "cache"
 DB_LOCATIONS_COLLECTION = "locations"
+
+PERMANENT_TITLE = 'ask hn: who is hiring?'
+FREELANCE_TITLE = 'ask hn: freelancer? seeking freelancer?'
