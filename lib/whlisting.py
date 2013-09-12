@@ -46,8 +46,7 @@ class PFSubmissions(object):
     #     # self.__dict__['_v'].append(value)
 
 class WHListing(OrderedDict, Base):
-    _date_rx = r'.*\((.+)\).*'
-    datere = re.compile(_date_rx)
+    datere = re.compile(Base.DATE_RX)
 
     def __init__(self):
         # self.listing = []

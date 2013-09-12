@@ -3,16 +3,13 @@ from lxml.html import parse
 import time
 import logging
 import utils
-from functools import partial
+from base import Base
 
 
 logger = logging.getLogger('lib.joblisting')
 
 
-class JobListing(object):
-    NEXT_PAGE_XPATH = '/html/body/center/table/tr[3]/td/table/tr[last()]/td/a/@href'
-    COMMENT_XPATH = '//td[@class="default"]'
-
+class JobListing(Base):
     def __init__(self, listing_item):
         self.date = listing_item.date
         self.title = listing_item.title
@@ -20,6 +17,8 @@ class JobListing(object):
         self.url = listing_item.url
         self.comments = []
         self._raw_comments = []
+
+        # super(JobListing, self).__init__()
 
         self._fetch_comments()
 
@@ -83,11 +82,11 @@ class JobListing(object):
         Returns:
          List of comments extracted from page in lxml.html.HtmlElement format
         """
-        return page.xpath(self.COMMENT_XPATH)
+        return page.xpath(Base.COMMENT_XPATH)
 
     def _extract_next_url(self, page):
         try:
-            nextpage = page.xpath(self.NEXT_PAGE_XPATH)[0]
+            nextpage = page.xpath(Base.NEXT_PAGE_XPATH)[0]
         except IndexError:
             nextpage = None
 
