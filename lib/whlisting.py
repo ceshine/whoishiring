@@ -56,10 +56,7 @@ class WHListing(OrderedDict, Base):
         return self[key]
 
     def _get(self):
-        """Get listing from HN user whoishiring
-
-        Returns:
-         List of named tuples containing title, url, date, permanent[T/F] indicator for each listing
+        """Get listing from HN user whoishiring and make available
         """
         try:
             nextpage = Base.SUBMISSION_URL
@@ -80,9 +77,6 @@ class WHListing(OrderedDict, Base):
 
         Args:
          url: url of page to download listings from
-
-        Returns:
-         List of Item elements
         """
         def _decide_perm(title):
             if Base.PERMANENT_TITLE in title:
@@ -129,4 +123,6 @@ class WHListing(OrderedDict, Base):
 
     @property
     def latest(self):
+        """Return the latest submissions, PFSubmissions object
+        """
         return self[next(iter(self))]

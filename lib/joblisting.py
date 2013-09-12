@@ -18,8 +18,6 @@ class JobListing(Base):
         self.comments = []
         self._raw_comments = []
 
-        # super(JobListing, self).__init__()
-
         self._fetch_comments()
 
     def __iter__(self):
@@ -43,8 +41,8 @@ class JobListing(Base):
         """Return a list of comments from an hn post with given link, delay is a fuzzing thing, probably useless
 
         Args:
-         listing_item - string value, like '/item?id=3412900' with article id, from _get_all_submissions
-         delay - be nice and wait between requests, or not
+         listing_item: string value, like '/item?id=3412900' with article id, from _get_all_submissions
+         delay: be nice and wait between requests, or not
         """
 
         try:
@@ -75,16 +73,23 @@ class JobListing(Base):
             self._process_comment(comment)
 
     def _extract_raw_comments(self, page):
-        """Extracts comments from raw page, puts them in the list
+        """Extracts comments from raw page
 
         Args:
-         ElementTree object with page contents
+         page: ElementTree object with page contents
         Returns:
          List of comments extracted from page in lxml.html.HtmlElement format
         """
         return page.xpath(Base.COMMENT_XPATH)
 
     def _extract_next_url(self, page):
+        """Extract next link from page
+
+        Args:
+         page: ElementTree object with page contents
+        Returns:
+         URL for next page or None
+        """
         try:
             nextpage = page.xpath(Base.NEXT_PAGE_XPATH)[0]
         except IndexError:
@@ -97,10 +102,6 @@ class JobListing(Base):
 
         Args:
          comment: html of the comment
-         parent: parent thread (not parent comment) of the comment
-         date: date of the posting of parent thread
-         permanent: Boolean of whether the comment came from freelance or regular posting
-
         """
         cpq = pq(comment)
         a = cpq('.comhead').find('a')
