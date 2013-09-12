@@ -26,7 +26,13 @@ class TestWHListing(Spec):
     def test_indexing_listing(self):
         l = whlisting.WHListing()
         idate = date(2012, 12, 1)
-        nt.ok_("December 2012" in l[idate][1].title, "Item doesn't contain correct string")
+        nt.ok_("December 2012" in l[idate][randint(0, 1)].title, "Item doesn't contain correct string")
+
+    def test_access_by_attribute(self):
+        l = whlisting.WHListing()
+        idate = date(2012, 12, 1)
+        nt.ok_("December 2012" in l[idate].permanent.title, "Item doesn't contain correct string")
+        nt.ok_("December 2012" in l[idate].freelance.title, "Item doesn't contain correct string")
 
     def test_iterates_in_order_over_listing(self):
         l = whlisting.WHListing()
