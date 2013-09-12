@@ -6,16 +6,16 @@ Usage
 -----
 
 ### whoishiring listing
-Get all user whoishiring's submissions
+Get all ![user whoishiring](https://news.ycombinator.com/submitted?id=whoishiring)'s submissions
 ```
 In [1]: from whoishiring.lib import whlisting
 
 In [2]: bydate = whlisting.WHListing()
 ```
 
-`WHListing` is a class that behaves like collections.OrderedDict. It holds all the posts submitted by user whoishiring.
+`WHListing` is a class that behaves like collections.OrderedDict. It holds all the posts submitted by whoishiring.
 
-You can index an instance of that class by date of the first day of the month
+You can index an instance of that class by date of the first day of a month
 ```
 In [3]: from datetime import date
 
@@ -26,7 +26,7 @@ Out[4]:
 ```
 and you'll receive a list of named tuples containing title, url, date and whether it's a perm or freelance listing for that date.
 
-If you're only interested in the latest postings, do
+If you're only interested in the latest postings do
 ```
 In [7]: bydate.latest
 Out[7]:
@@ -34,19 +34,29 @@ Out[7]:
  HNListingItem(title='Ask HN: Who is hiring? (September 2013)', permanent=True, url='item?id=6310234', date=datetime.date(2013, 9, 1))]
 ```
 
-Or if you're interested only in freelance postings do
+Or if you're interested only in latest freelance postings
 ```
 In [6]: bydate.latest.freelance
 Out[6]: HNListingItem(title='Ask HN: Freelancer? Seeking freelancer? (September 2013)', permanent='freelance', url='item?id=6310240', date=datetime.date(2013, 9, 1))
+```
 
+Similarly, you can get permanent postings from January 2013 like this
+```
 In [8]: d=date(2013, 1, 1)
 In [9]: bydate[d].permanent
 Out[9]: HNListingItem(title='Ask HN: Who is hiring? (January 2013)', permanent='permanent', url='item?id=4992617', date=datetime.date(2013, 1, 1))
 
 ```
 
-### On to job listings
-You can ask for jobs from specific date by passing HTListingItem. Really you need a named tuple that has a date.
+### Job listings for particular date
+You can ask for jobs from specific date by passing `HNListingItem` from WHListing. Really you need a named tuple that has a date. Job listing is iterable. Each index holds a dictionary with information about the comment:
+* html
+* text
+* url
+* author
+* date
+* permanent <- this is a string, not a boolean like in the HNListingItem
+* parent_thread
 
 ```
 In [12]: j = joblisting.JobListing(l.latest.permanent)
