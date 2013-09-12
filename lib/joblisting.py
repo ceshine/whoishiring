@@ -4,6 +4,7 @@ import time
 import logging
 import utils
 from base import Base
+from urlparse import urljoin
 
 
 logger = logging.getLogger('lib.joblisting')
@@ -53,7 +54,7 @@ class JobListing(Base):
             while True:
                 logger.info('page: %s', link)
 
-                raw = utils.get_raw_page(link)
+                raw = utils.get_raw_page(urljoin(Base.HN_BASE_URL, link))
                 page = parse(raw)
                 comments = self._extract_raw_comments(page)
                 link = self._extract_next_url(page)
