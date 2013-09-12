@@ -1,15 +1,8 @@
-from random import randint
 from pyquery import PyQuery as pq
 from lxml.html import parse
-from dateutil.parser import parse as date_parse
-from datetime import timedelta, datetime
-import re
 import time
-from collections import namedtuple
 import logging
 import utils
-from base import Base
-from urlparse import urljoin
 
 
 logger = logging.getLogger('lib.joblisting')
