@@ -3,6 +3,8 @@ from lib import utils
 from mock import patch
 from spec import Spec
 import urllib2
+import os
+
 
 class TestWHListing(Spec):
     def setup(self):
@@ -12,7 +14,9 @@ class TestWHListing(Spec):
 
     @patch("urllib2.urlopen")
     def test_get_raw_page(self, urlopen_mock):
-        with open('data/whoishiring.html', 'r') as f:
+        datadir = os.path.normpath(os.path.abspath(__file__)).split(os.sep)
+        datadir = os.sep.join(datadir[:-2])
+        with open('%s/tests/data/whoishiring.html' % datadir, 'r') as f:
             urlopen_mock.return_value = f
             nt.ok_('http://ycombinator.com' in utils.get_raw_page('fake_page').read(),
                    "It doesn't appear the the correct file was read")
