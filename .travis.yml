@@ -7,5 +7,5 @@ script: nosetests
 # whitelist
 branches:
   only:
-#    - master
-    - dev
+    - master
+#    - dev
