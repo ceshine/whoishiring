@@ -3,6 +3,7 @@ from lxml.html import parse
 import time
 import logging
 import utils
+from functools import partial
 
 
 logger = logging.getLogger('lib.joblisting')
@@ -18,6 +19,7 @@ class JobListing(object):
         self.permanent = listing_item.permanent
         self.url = listing_item.url
         self.comments = []
+        self._raw_comments = []
 
         self._fetch_comments()
 
@@ -48,13 +50,16 @@ class JobListing(object):
 
         try:
             link = self.url
+            # for (comments, link) in iter(partial(self._extract_raw_comments, link), None):
+            #     self._process_comments(comments)
+
             while True:
                 logger.info('page: %s', link)
 
                 raw = utils.get_raw_page(link)
-                comments, link = self._extract_raw_comments(raw)
-
-                logger.info('\tfetched %s comments', len(comments))
+                page = parse(raw)
+                comments = self._extract_raw_comments(page)
+                link = self._extract_next_url(page)
 
                 self._process_comments(comments)
 
@@ -64,28 +69,29 @@ class JobListing(object):
                 else:
                     break
         except:
-            raise("Error occured when fetching comments for %s", self.title)
+            raise
 
     def _process_comments(self, comments):
         for comment in comments:
             self._process_comment(comment)
 
-    def _extract_raw_comments(self, raw):
+    def _extract_raw_comments(self, page):
         """Extracts comments from raw page, puts them in the list
 
         Args:
-         File-like object, result of get_raw_page or file name, whatever lxml parse would expect
+         ElementTree object with page contents
         Returns:
          List of comments extracted from page in lxml.html.HtmlElement format
         """
-        page = parse(raw)
-        comments = page.xpath(self.COMMENT_XPATH)
+        return page.xpath(self.COMMENT_XPATH)
+
+    def _extract_next_url(self, page):
         try:
             nextpage = page.xpath(self.NEXT_PAGE_XPATH)[0]
         except IndexError:
             nextpage = None
 
-        return comments, nextpage
+        return nextpage
 
     def _process_comment(self, comment):
         """Arranges comment into a dictionary containing some meta data about the comment
