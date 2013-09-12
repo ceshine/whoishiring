@@ -1,14 +1,11 @@
 import nose.tools as nt
-from lib import whlisting, utils
+from lib import utils
 from mock import patch
 from spec import Spec
 import mocks
 from datetime import date
-from random import randint
-from itertools import izip
 from lib.joblisting import JobListing
 from collections import namedtuple
-from datetime import date
 
 
 Item = namedtuple('HNListingItem', ['title', 'permanent', 'url', 'date'], verbose=False)
