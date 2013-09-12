@@ -17,6 +17,3 @@ class MetaBase(type):
 
 class Base(object):
     __metaclass__ = MetaBase
-
-    def __init__(self):
-        super(Base, self).__init__()
