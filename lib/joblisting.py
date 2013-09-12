@@ -15,11 +15,10 @@ from urlparse import urljoin
 logger = logging.getLogger('lib.joblisting')
 
 
-NEXT_PAGE_XPATH = '/html/body/center/table/tr[3]/td/table/tr[last()]/td/a/@href'
-COMMENT_XPATH = '//td[@class="default"]'
-
-
 class JobListing(object):
+    NEXT_PAGE_XPATH = '/html/body/center/table/tr[3]/td/table/tr[last()]/td/a/@href'
+    COMMENT_XPATH = '//td[@class="default"]'
+
     def __init__(self, listing_item):
         self.date = listing_item.date
         self.title = listing_item.title
@@ -87,9 +86,9 @@ class JobListing(object):
          List of comments extracted from page in lxml.html.HtmlElement format
         """
         page = parse(raw)
-        comments = page.xpath(COMMENT_XPATH)
+        comments = page.xpath(self.COMMENT_XPATH)
         try:
-            nextpage = page.xpath(NEXT_PAGE_XPATH)[0]
+            nextpage = page.xpath(self.NEXT_PAGE_XPATH)[0]
         except IndexError:
             nextpage = None
 
@@ -118,4 +117,3 @@ class JobListing(object):
             'permanent': self.permanent,
             'parent_thread': self.url
         })
-        
