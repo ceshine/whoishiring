@@ -1,10 +1,6 @@
-from random import randint
 from pyquery import PyQuery as pq
-from lxml.html import parse
 from dateutil.parser import parse as date_parse
-from datetime import timedelta, datetime
 import re
-import time
 from collections import namedtuple
 import logging
 import utils
@@ -41,9 +37,6 @@ class PFSubmissions(object):
         #TODO: I don't know about this
         return self.permanent if item else self.freelance
 
-    # def __setattr__(self, key, value):
-    #     self.__dict__[key] = value
-    #     # self.__dict__['_v'].append(value)
 
 class WHListing(OrderedDict, Base):
     datere = re.compile(Base.DATE_RX)
