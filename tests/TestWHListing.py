@@ -15,6 +15,7 @@ class TestWHListing(Spec):
                                        autospec=True,
                                        return_value=mocks.get_page('%s/tests/data/whoishiring.html'))
         self.patcher_ep.start()
+        self.idate = date(2012, 12, 1)
 
     def teardown(self):
         self.patcher_ep.stop()
@@ -25,8 +26,17 @@ class TestWHListing(Spec):
 
     def test_indexing_listing(self):
         l = whlisting.WHListing()
-        idate = date(2012, 12, 1)
-        nt.ok_("December 2012" in l[idate][randint(0, 1)].title, "Item doesn't contain correct string")
+        nt.ok_("December 2012" in l[self.idate][randint(0, 1)].title, "Item doesn't contain correct string")
+
+    def test_out_of_index_raises_IndexError(self):
+        l = whlisting.WHListing()
+        with nt.assert_raises(IndexError):
+            l[self.idate][3]
+
+    def test_iterating_over_submissions(self):
+        l = whlisting.WHListing()
+        for item in l[self.idate]:
+            nt.eq_(item.date, self.idate, "Item doesn't have a correct date")
 
     def test_access_by_attribute(self):
         l = whlisting.WHListing()
