@@ -35,8 +35,13 @@ class PFSubmissions(object):
     def __getitem__(self, item):
         # self.__dict__.values()[item]
         #TODO: I don't know about this
-        return self.permanent if item else self.freelance
+        if item not in (0, 1):
+            raise IndexError
+        else:
+            return self.permanent if item else self.freelance
 
+    def __iter__(self):
+        return self.__dict__.itervalues()
 
 class WHListing(OrderedDict, Base):
     datere = re.compile(Base.DATE_RX)
