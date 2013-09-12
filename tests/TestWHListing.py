@@ -52,4 +52,4 @@ class TestWHListing(Spec):
     def test_returns_correct_latest(self):
         l = whlisting.WHListing()
         nt.eq_(l.keys()[0], date(2013, 3, 1), "Bad date forthe latest item")
-        nt.eq_(l.latest()[0].date, date(2013, 3, 1), "Bad date forthe latest item")
+        nt.eq_(l.latest[0].date, date(2013, 3, 1), "Bad date forthe latest item")

@@ -108,5 +108,6 @@ class WHListing(OrderedDict, Base):
             logging.error("Can't prepare submission, you may be rate limited.")
             raise
 
+    @property
     def latest(self):
         return self[next(iter(self))]
