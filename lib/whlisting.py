@@ -48,7 +48,7 @@ class WHListing(OrderedDict, Base):
         """Get listing from HN user whoishiring
 
         Returns:
-         List of named tuples containing title, url, date, is_freelance[T/F] indicator for each listing
+         List of named tuples containing title, url, date, permanent[T/F] indicator for each listing
         """
         try:
             nextpage = Base.SUBMISSION_URL
