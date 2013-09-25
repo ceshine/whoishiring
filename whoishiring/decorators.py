@@ -27,14 +27,6 @@ import logging
 
 
 logger = logging.getLogger('whoishiring.decorators')
-logger.setLevel(logging.INFO)
-
-ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
-
-formatter = logging.Formatter('%(message)s')
-ch.setFormatter(formatter)
-logger.addHandler(ch)
 
 
 def exc_handler(tries_remaining, exception, delay):
@@ -43,7 +35,7 @@ def exc_handler(tries_remaining, exception, delay):
     tries_remaining: The number of tries remaining.
     exception: The exception instance which was raised.
     """
-    logger.error("Caught '%s', %d tries remaining, sleeping for %s seconds" % (exception, tries_remaining, delay))
+    sys.stderr.write("Caught '%s', %d tries remaining, sleeping for %s seconds" % (exception, tries_remaining, delay))
 
 def retries(max_tries, delay=1, backoff=2, exceptions=(Exception,), hook=exc_handler):
     """Function decorator implementing retrying logic.
