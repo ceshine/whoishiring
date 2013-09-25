@@ -62,9 +62,10 @@ class JobListing(Base):
                 self._process_comments(comments)
 
                 if link:
-                    #TODO: don't run this?
+                    logger.info('Waiting %s seconds', delay)
                     time.sleep(delay)
                 else:
+                    logger.info("Downloaded all comments under submission")
                     break
         except:
             raise
