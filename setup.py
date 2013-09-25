@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from setuptools import setup, find_packages
 
-print find_packages(exclude=['tests*'])
+
 setup(name='whoishiring',
       version='0.1.0',
       author='Jan Zegan',
