@@ -32,7 +32,7 @@ class JobListing(Base):
             len(self.comments),
             self.url,
             self.date,
-            'permanent' if self.permanent else 'freelance'
+            self.permanent
         )
 
     def __getitem__(self, item):
