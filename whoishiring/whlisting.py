@@ -59,8 +59,10 @@ class WHListing(OrderedDict, Base):
 
 
     def __missing__(self, key):
-        self[key] = PFSubmissions()
-        return self[key]
+        if isinstance(key, date):
+            self[key] = PFSubmissions()
+            return self[key]
+        raise KeyError
 
     def _get(self):
         """Get listing from HN user whoishiring and make available
