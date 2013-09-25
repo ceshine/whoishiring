@@ -43,6 +43,9 @@ class PFSubmissions(object):
     def __iter__(self):
         return self.__dict__.itervalues()
 
+    def __str__(self):
+        return '[{},\n{}]'.format(self.permanent, self.freelance)
+
 class WHListing(OrderedDict, Base):
     datere = re.compile(Base.DATE_RX)
 
@@ -50,6 +53,10 @@ class WHListing(OrderedDict, Base):
         # self.listing = []
         super(WHListing, self).__init__()
         self._get()
+
+    def __str__(self):
+        return '{{{}}}'.format('\n'.join([item.__str__() for item in self.values()]))
+
 
     def __missing__(self, key):
         self[key] = PFSubmissions()
