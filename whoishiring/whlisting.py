@@ -118,8 +118,8 @@ class WHListing(OrderedDict, Base):
                                                   url=url,
                                                   date=idate
                                                ))
-            except (AttributeError, ValueError):
-                logger.info('SKIPPING: %s', title)
+            except (AttributeError, ValueError) as e:
+                logger.info('SKIPPING: %s, error: %s', title, e)
 
         try:
             if listing[-1].text == 'More':
