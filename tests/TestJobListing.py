@@ -11,7 +11,7 @@ from collections import namedtuple
 Item = namedtuple('HNListingItem', ['title', 'permanent', 'url', 'date'], verbose=False)
 
 
-class TestWHListing(Spec):
+class TestJobListing(Spec):
     def setup(self):
         self.patcher_ep = patch.object(utils,
                                        'get_raw_page',
@@ -27,7 +27,6 @@ class TestWHListing(Spec):
     def test_listing_has_nonzero_length(self):
         j = JobListing(self.item)
         nt.eq_(len(j), 103, "Incorrect object length")
-        print j
 
     def test_comment_from_correct_date_and_indexing(self):
         j = JobListing(self.item)
