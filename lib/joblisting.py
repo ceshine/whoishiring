@@ -11,7 +11,7 @@ logger = logging.getLogger('lib.joblisting')
 
 
 class JobListing(Base):
-    def __init__(self, listing_item):
+    def __init__(self, listing_item, delay=0):
         self.date = listing_item.date
         self.title = listing_item.title
         self.permanent = listing_item.permanent
@@ -19,7 +19,7 @@ class JobListing(Base):
         self.comments = []
         self._raw_comments = []
 
-        self._fetch_comments()
+        self._fetch_comments(delay)
 
     def __iter__(self):
         return iter(self.comments)
