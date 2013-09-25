@@ -5,10 +5,10 @@ from functools import wraps
 from decorators import retries
 
 
-logger = logging.getLogger('lib.utils')
+logger = logging.getLogger('whoishiring.utils')
 
 
-@retries(5, 2, 5,exceptions=(urllib2.URLError))
+@retries(10, 1, 2, exceptions=(urllib2.URLError))
 def get_raw_page(url):
     """Download a listing page with the given link
 
