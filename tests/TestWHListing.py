@@ -1,5 +1,5 @@
 import nose.tools as nt
-from lib import whlisting, utils
+from whoishiring import whlisting, utils
 from mock import patch
 from spec import Spec
 import mocks

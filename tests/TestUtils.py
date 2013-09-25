@@ -1,5 +1,5 @@
 import nose.tools as nt
-from lib import utils
+from whoishiring import utils
 from mock import patch
 from spec import Spec
 import urllib2
