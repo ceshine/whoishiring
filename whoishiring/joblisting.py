@@ -52,20 +52,21 @@ class JobListing(Base):
             #     self._process_comments(comments)
 
             while True:
-                logger.info('page: %s', link)
+                logger.info('processing page: %s', link)
 
                 raw = utils.get_raw_page(urljoin(Base.HN_BASE_URL, link))
+                logger.debug('Got raw page, parsing...')
                 page = parse(raw)
+                logger.debug('Extracting comments and next page...')
                 comments = self._extract_raw_comments(page)
                 link = self._extract_next_url(page)
-
+                logger.debug('Processing comments...')
                 self._process_comments(comments)
-
                 if link:
-                    logger.info('Waiting %s seconds', delay)
+                    logger.info('Waiting %s seconds...', delay)
                     time.sleep(delay)
                 else:
-                    logger.info("Downloaded all comments under submission")
+                    logger.info("Downloaded all comments under submission %s", self.title)
                     break
         except:
             raise
