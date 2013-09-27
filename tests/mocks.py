@@ -9,3 +9,15 @@ def get_page(page):
     with open(page % datadir, 'r') as f:
         raw = StringIO(f.read())
     return raw
+
+def hook():
+    print("Exception caught, retrying")
+
+def retry_mock(max_tries, delay=1, backoff=2, exceptions=(Exception,), hook=None):
+    print 'mock retry called'
+    def dec(func):
+        def f2(*args, **kwargs):
+            try:
+               return func(*args, **kwargs)
+            except exceptions as e:
+                hook()
