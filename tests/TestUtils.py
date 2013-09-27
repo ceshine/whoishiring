@@ -21,6 +21,7 @@ class TestWHListing(Spec):
             nt.ok_('http://ycombinator.com' in utils.get_raw_page('fake_page').read(),
                    "It doesn't appear the the correct file was read")
 
+    @nt.nottest
     @patch("urllib2.urlopen")
     def test_get_raw_page_network_error(self, urlopen_mock):
         with nt.assert_raises(urllib2.URLError):
