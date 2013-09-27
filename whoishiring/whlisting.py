@@ -10,7 +10,7 @@ from collections import OrderedDict
 from datetime import date
 
 
-logger = logging.getLogger('lib.whlisting')
+logger = logging.getLogger('whoishiring.whlisting')
 
 
 # A list of those is returned after parsing the listing page for whoishiring account
