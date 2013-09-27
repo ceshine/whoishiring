@@ -7,7 +7,7 @@ from base import Base
 from urlparse import urljoin
 
 
-logger = logging.getLogger('lib.joblisting')
+logger = logging.getLogger('whoishiring.joblisting')
 
 
 class JobListing(Base):
@@ -58,7 +58,8 @@ class JobListing(Base):
                 logger.debug('Got raw page, parsing...')
                 page = parse(raw)
                 logger.debug('Extracting comments and next page...')
-                comments = self._extract_raw_comments(page)
+                # [:-2] the last two are some spacers
+                comments = self._extract_raw_comments(page)[:-2]
                 link = self._extract_next_url(page)
                 logger.debug('Processing comments...')
                 self._process_comments(comments)
@@ -100,6 +101,21 @@ class JobListing(Base):
 
         return nextpage
 
+    def is_tlc(self, comment):
+        """Decide if comment is a top level comment, not a response
+
+        Args:
+         comment: PyQuery object
+
+        Returns a lower level element with class default if img element's width is 0 else false
+        """
+        try:
+            img = comment.find('img')[0]
+        except IndexError:
+            return False
+
+        return img.attrib['width'] == '0'
+
     def _process_comment(self, comment):
         """Arranges comment into a dictionary containing some meta data about the comment
 
@@ -107,15 +123,19 @@ class JobListing(Base):
          comment: html of the comment
         """
         cpq = pq(comment)
-        a = cpq('.comhead').find('a')
-        contents = cpq('.comment')
+        top_level_comment = self.is_tlc(cpq)
 
-        self.comments.append({
-            'html': contents.html().encode('utf-8'),
-            'text': contents.text(),
-            'url' : a.eq(1).attr.href,
-            'author': a.eq(0).attr.href,
-            'date': self.date,
-            'permanent': self.permanent,
-            'parent_thread': self.url
-        })
+        if top_level_comment:
+            a = cpq('.comhead').find('a')
+
+            contents = cpq('.comment')
+
+            self.comments.append({
+                'html': contents.html().encode('utf-8'),
+                'text': contents.text(),
+                'url' : a.eq(1).attr.href,
+                'author': a.eq(0).attr.href,
+                'date': self.date,
+                'permanent': self.permanent,
+                'parent_thread': self.url
+            })
