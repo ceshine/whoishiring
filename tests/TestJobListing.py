@@ -26,7 +26,7 @@ class TestJobListing(Spec):
 
     def test_listing_has_nonzero_length(self):
         j = JobListing(self.item)
-        nt.eq_(len(j), 103, "Incorrect object length")
+        nt.eq_(len(j), 78, "Incorrect object length")
 
     def test_comment_from_correct_date_and_indexing(self):
         j = JobListing(self.item)
@@ -34,7 +34,7 @@ class TestJobListing(Spec):
 
     def test_prints_human_readable_str(self):
         j = JobListing(self.item)
-        nt.ok_('103' in j.__str__(), "Incorrect or unreadable str")
+        nt.ok_('78' in j.__str__(), "Incorrect or unreadable str")
 
     def test_iterates_over_comments(self):
         j = JobListing(self.item)
