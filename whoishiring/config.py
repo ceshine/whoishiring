@@ -15,6 +15,6 @@ DB_LOCATIONS_COLLECTION = "locations"
 PERMANENT_TITLE = 'ask hn: who is hiring?'
 FREELANCE_TITLE = 'ask hn: freelancer? seeking freelancer?'
 
-NEXT_PAGE_XPATH = '/html/body/center/table/tr[3]/td/table/tr[last()]/td/a/@href'
-COMMENT_XPATH = '/html/body/center/table/tr[3]/td/table[2]/tr'
+NEXT_PAGE_XPATH = ".//a[text()='More']"
+COMMENT_XPATH = '//img[@width=0]/../..'
 DATE_RX = r'.*\((.+)\).*'

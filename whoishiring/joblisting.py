@@ -123,19 +123,17 @@ class JobListing(Base):
          comment: html of the comment
         """
         cpq = pq(comment)
-        top_level_comment = self.is_tlc(cpq)
 
-        if top_level_comment:
-            a = cpq('.comhead').find('a')
+        a = cpq('.comhead').find('a')
 
-            contents = cpq('.comment')
+        contents = cpq('.comment')
 
-            self.comments.append({
-                'html': contents.html().encode('utf-8'),
-                'text': contents.text(),
-                'url' : a.eq(1).attr.href,
-                'author': a.eq(0).attr.href,
-                'date': self.date,
-                'permanent': self.permanent,
-                'parent_thread': self.url
-            })
+        self.comments.append({
+            'html': contents.html().encode('utf-8'),
+            'text': contents.text(),
+            'url' : a.eq(1).attr.href,
+            'author': a.eq(0).attr.href,
+            'date': self.date,
+            'permanent': self.permanent,
+            'parent_thread': self.url
+        })
