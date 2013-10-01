@@ -95,7 +95,7 @@ class JobListing(Base):
          URL for next page or None
         """
         try:
-            nextpage = page.xpath(Base.NEXT_PAGE_XPATH)[0]
+            nextpage = page.xpath(Base.NEXT_PAGE_XPATH)[0].attrib['href']
         except IndexError:
             nextpage = None
 
