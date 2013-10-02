@@ -12,6 +12,7 @@ logger = logging.getLogger('whoishiring.joblisting')
 
 class JobListing(Base):
     def __init__(self, listing_item, delay=0):
+        logger.debug("Processing %s", listing_item)
         self.date = listing_item.date
         self.title = listing_item.title
         self.permanent = listing_item.permanent
@@ -59,7 +60,7 @@ class JobListing(Base):
                 page = parse(raw)
                 logger.debug('Extracting comments and next page...')
                 # [:-2] the last two are some spacers
-                comments = self._extract_raw_comments(page)[:-2]
+                comments = self._extract_raw_comments(page)[:-1]
                 link = self._extract_next_url(page)
                 logger.debug('Processing comments...')
                 self._process_comments(comments)
