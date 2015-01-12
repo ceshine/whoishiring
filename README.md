@@ -8,7 +8,7 @@ Usage
 ### whoishiring listing
 Get all [user whoishiring](https://news.ycombinator.com/submitted?id=whoishiring)'s submissions
 ```
-In [1]: from whoishiring.lib import whlisting
+In [1]: from whoishiring import whlisting
 
 In [2]: bydate = whlisting.WHListing()
 ```
