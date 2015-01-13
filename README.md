@@ -59,6 +59,8 @@ You can ask for jobs from specific date by passing `HNListingItem` from WHListin
 * parent_thread
 
 ```
+In [10]: from whoishiring import joblisting
+
 In [12]: j = joblisting.JobListing(l.latest.permanent)
 
 In [12]: j.date
