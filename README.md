@@ -61,12 +61,12 @@ You can ask for jobs from specific date by passing `HNListingItem` from WHListin
 ```
 In [10]: from whoishiring import joblisting
 
-In [12]: j = joblisting.JobListing(l.latest.permanent)
+In [11]: j = joblisting.JobListing(l.latest.permanent)
 
 In [12]: j.date
 Out[12]: datetime.date(2013, 9, 1)
 
-In [11]: for v in j:
+In [13]: for v in j:
    ....:     print v['author']
    ....:
 user?id=author1
@@ -76,8 +76,8 @@ user?id=author4
 user?id=author5
 ...
 
-In [13]: len(j)
-Out[13]: 369
+In [14]: len(j)
+Out[14]: 369
 ```
 
 That's prety much it.
